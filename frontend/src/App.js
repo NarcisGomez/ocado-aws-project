@@ -13,14 +13,17 @@ function App() {
   const [getProduct] = useLazyQuery(getProductQuery)
 
   const handleFetch = async () => {
-    try {
-      setFetch(true)
-      const { data } = await getProduct({ variables: { name: productInput } })
-      setFetch(false)
-      setResponse(data.getProduct)
-    } catch (err) {
-      console.log('fetch error:', err)
+    if (productInput) {
+      try {
+        setFetch(true)
+        const { data } = await getProduct({ variables: { name: productInput } })
+        setFetch(false)
+        setResponse(data.getProduct)
+      } catch (err) {
+        console.log('fetch error:', err)
+      }
     }
+    else setResponse('')
   }
 
   return (
@@ -47,8 +50,10 @@ function App() {
           <div>
             <Typography>Fetch your product</Typography>
             <TextField disabled={fetch} value={productInput} onChange={(event) => setProductInput(event.target.value)} />
-            <Button onClick={handleFetch}>Fetch</Button>
-            <Typography>{response || ''}</Typography>
+            <Button onClick={handleFetch} disabled={!productInput}>Fetch</Button>
+            {response &&
+              <Typography>{`name: ${response.name}, price: ${response.price}` || ''}</Typography>
+            }
           </div>
         }
       </main>

@@ -1,4 +1,4 @@
-import { CfnOutput, Stack, StackProps } from 'aws-cdk-lib';
+import { CfnOutput, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
 import { AttributeType, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { Code, Function, FunctionUrlAuthType, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
@@ -11,7 +11,8 @@ export class OcadoBackendStack extends Stack {
       partitionKey: {
         name: 'name',
         type: AttributeType.STRING
-      }
+      },
+      removalPolicy: RemovalPolicy.DESTROY,
     })
 
     const graphqlLambda = new Function(this, 'graphqlLambda', {

@@ -11,7 +11,7 @@ const getProduct = async (name) => {
     try {
         const dynamoClient = new DynamoDBClient()
         const params = {
-            Key: { id: name },
+            Key: { name },
             TableName: process.env.PRODUCTS_TABLE
         }
         const response = await dynamoClient.send(new GetCommand(params))
